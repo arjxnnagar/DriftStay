@@ -7,6 +7,4 @@ mainRouter.get("/status",(req,res)=>{
     res.send("Server is Live");
 })
 
-
-
 export default  mainRouter;
