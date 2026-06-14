@@ -29,6 +29,7 @@ model User {
   name         String
   email        String      @unique
   passwordHash String
+  profilePicture String?
   role         UserRole    @default(GUEST)
 
   properties   Property[]
