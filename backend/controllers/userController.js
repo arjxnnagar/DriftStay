@@ -1,14 +1,17 @@
 import bcrypt, { genSalt, hash } from "bcrypt";
 import jwt from "jsonwebtoken";
 import prisma from "../configs/prisma.js";
-import generateToken from "../configs/jwt.js"
+import generateToken from "../configs/jwt.js";
+
+import passport from "passport";
+import GoogleStrategy from "passport-google-oidc";
 
 export const signup = async (req, res) => {
-  const { name , email , password } = req.body;
+  const { name, email, password } = req.body;
 
   try {
-    if(!name || !email || !password){
-      return res.status(400).json({message:"Missing Credentials"});
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Missing Credentials" });
     }
 
     const user = await prisma.user.findUnique({
@@ -17,8 +20,8 @@ export const signup = async (req, res) => {
       },
     });
 
-    if(user){
-      return res.status(400).json({message:"Invaild Credentials"});
+    if (user) {
+      return res.status(400).json({ message: "Invaild Credentials" });
     }
 
     const hashedPass = await bcrypt.hash(password, 10);
@@ -32,9 +35,8 @@ export const signup = async (req, res) => {
     });
 
     const token = generateToken(newUser.id);
-    res.status(200).json({token,message:"Signup Successfull"});
-
-  } catch (err){
+    res.status(200).json({ token, message: "Signup Successfull" });
+  } catch (err) {
     console.log(err);
   }
 };
@@ -53,20 +55,24 @@ export const login = async (req, res) => {
       },
     });
 
-    if(!user){
-      return res.status(400).json({message:"Invaild Credentials"});
+    if (!user) {
+      return res.status(400).json({ message: "Invaild Credentials" });
     }
 
-    const verify = await bcrypt.compare(password,user.passwordHash);
-    if(!verify){
+    const verify = await bcrypt.compare(password, user.passwordHash);
+    if (!verify) {
       return res.status(400).json({ message: "Invaild Credentials" });
     }
 
     const token = generateToken(user.id);
     res.status(200).json({ token, message: "Login Successfull" });
-
   } catch (err) {
     console.log(err);
   }
+};
 
+export const google = async (req, res) => {
+  const token = generateToken(req.user.id);
+  
+  res.redirect(`${process.env.FRONTEND_URL}/oauth-success?token=${token}`);
 };

@@ -4,6 +4,10 @@ import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
     const navigate = useNavigate();
+
+    
+
+
   return (
     <header className="w-full bg-white border-b">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
