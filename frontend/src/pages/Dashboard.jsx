@@ -1,106 +1,159 @@
-import React from "react";
+import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 
 export default function Dashboard() {
+  const allProperties = [
+    {
+      id: 1,
+      title: "Luxury Apartment",
+      location: "Delhi",
+      price: 4500,
+      rating: 4.8,
+      image:
+        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
+    },
+    {
+      id: 2,
+      title: "Mountain Villa",
+      location: "Manali",
+      price: 6500,
+      rating: 4.9,
+      image:
+        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
+    },
+    {
+      id: 3,
+      title: "Beach House",
+      location: "Goa",
+      price: 8000,
+      rating: 4.7,
+      image:
+        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
+    },
+    {
+      id: 4,
+      title: "Royal Palace Stay",
+      location: "Jaipur",
+      price: 5500,
+      rating: 4.6,
+      image:
+        "https://images.unsplash.com/photo-1494526585095-c41746248156?w=800",
+    },
+  ];
+
+  const [search, setSearch] = useState("");
+
+  const filteredProperties = allProperties.filter((property) =>
+    property.location.toLowerCase().includes(search.toLowerCase()),
+  );
+
   return (
     <div className="min-h-screen bg-slate-200">
       <Navbar />
 
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {/* Heading */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold">Dashboard</h1>
-          <p className="text-gray-600 mt-2">
-            Manage your properties and bookings.
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Hero */}
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold mb-3">Find Your Perfect Stay</h1>
+
+          <p className="text-gray-600">
+            Search from thousands of properties across India.
           </p>
         </div>
 
+        {/* Search Bar */}
+        <div className="bg-white p-5 rounded-xl shadow-sm mb-10">
+          <div className="flex flex-col md:flex-row gap-4">
+            <input
+              type="text"
+              placeholder="Search by city (Delhi, Goa, Manali...)"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="flex-1 border rounded-lg px-4 py-3 outline-none focus:ring-2 focus:ring-black"
+            />
+
+            <button className="bg-black text-white px-6 py-3 rounded-lg">
+              Search
+            </button>
+          </div>
+        </div>
+
         {/* Stats */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          <StatCard title="Properties" value="12" />
-          <StatCard title="Bookings" value="84" />
-          <StatCard title="Revenue" value="₹1,24,000" />
-          <StatCard title="Reviews" value="4.8 ★" />
-        </section>
-
-        {/* Recent Bookings */}
-        <section className="bg-white rounded-xl shadow-sm p-6 mb-10">
-          <h2 className="text-xl font-semibold mb-6">Recent Bookings</h2>
-
-          <div className="space-y-4">
-            {[
-              {
-                guest: "Rahul Sharma",
-                property: "Luxury Apartment",
-                date: "15 Jun 2026",
-              },
-              {
-                guest: "Anjali Singh",
-                property: "Mountain Villa",
-                date: "14 Jun 2026",
-              },
-              {
-                guest: "Aman Gupta",
-                property: "Beach House",
-                date: "13 Jun 2026",
-              },
-            ].map((booking, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center border-b pb-4"
-              >
-                <div>
-                  <h3 className="font-medium">{booking.guest}</h3>
-                  <p className="text-sm text-gray-500">{booking.property}</p>
-                </div>
-
-                <span className="text-sm text-gray-500">{booking.date}</span>
-              </div>
-            ))}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
+          <div className="bg-white p-5 rounded-xl shadow-sm">
+            <p className="text-gray-500">Properties</p>
+            <h3 className="text-3xl font-bold">{allProperties.length}</h3>
           </div>
-        </section>
 
-        {/* Properties */}
+          <div className="bg-white p-5 rounded-xl shadow-sm">
+            <p className="text-gray-500">Cities</p>
+            <h3 className="text-3xl font-bold">4</h3>
+          </div>
+
+          <div className="bg-white p-5 rounded-xl shadow-sm">
+            <p className="text-gray-500">Average Rating</p>
+            <h3 className="text-3xl font-bold">4.8</h3>
+          </div>
+
+          <div className="bg-white p-5 rounded-xl shadow-sm">
+            <p className="text-gray-500">Happy Guests</p>
+            <h3 className="text-3xl font-bold">10K+</h3>
+          </div>
+        </div>
+
+        {/* Property Grid */}
         <section>
-          <h2 className="text-xl font-semibold mb-6">My Properties</h2>
+          <h2 className="text-2xl font-semibold mb-6">Available Properties</h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((property) => (
-              <div
-                key={property}
-                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
-              >
-                <div className="h-48 bg-gray-300"></div>
+          {filteredProperties.length === 0 ? (
+            <div className="bg-white rounded-xl p-8 text-center">
+              <p className="text-gray-500">No properties found.</p>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProperties.map((property) => (
+                <div
+                  key={property.id}
+                  className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition"
+                >
+                  <img
+                    src={property.image}
+                    alt={property.title}
+                    className="w-full h-56 object-cover"
+                  />
 
-                <div className="p-4">
-                  <h3 className="font-semibold">Luxury Apartment</h3>
+                  <div className="p-5">
+                    <div className="flex justify-between items-center">
+                      <h3 className="font-semibold text-lg">
+                        {property.title}
+                      </h3>
 
-                  <p className="text-sm text-gray-500">Delhi, India</p>
+                      <span className="font-medium">⭐ {property.rating}</span>
+                    </div>
 
-                  <p className="mt-2 font-medium">₹4,500 / night</p>
+                    <p className="text-gray-500 mt-2">📍 {property.location}</p>
 
-                  <button className="mt-4 w-full bg-black text-white py-2 rounded-lg">
-                    Manage Property
-                  </button>
+                    <p className="text-xl font-bold mt-4">
+                      ₹{property.price}
+                      <span className="text-sm text-gray-500 font-normal">
+                        {" "}
+                        / night
+                      </span>
+                    </p>
+
+                    <button className="w-full mt-5 bg-black text-white py-2.5 rounded-lg hover:bg-gray-800">
+                      View Details
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
       </main>
 
       <Footer />
-    </div>
-  );
-}
-
-function StatCard({ title, value }) {
-  return (
-    <div className="bg-white rounded-xl shadow-sm p-6">
-      <p className="text-gray-500 text-sm">{title}</p>
-
-      <h3 className="text-3xl font-bold mt-2">{value}</h3>
     </div>
   );
 }

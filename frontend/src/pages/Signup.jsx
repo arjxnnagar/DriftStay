@@ -2,8 +2,8 @@ import React from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 
 export default function Signup({ loginState, setLoginState }) {
-  const handleGoogleSignup = () => {
-
+  const handleGoogleSignup = async () => {
+    window.location.href = `${import.meta.env.VITE_BACKEND_URL}/users/google`;
   };
 
   return (

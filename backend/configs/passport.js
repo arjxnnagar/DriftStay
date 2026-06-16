@@ -9,7 +9,8 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
-      callbackURL: "http://localhost:3000/users/google/callback",
+      callbackURL:
+        `${process.env.BACKEND_URL}/users/google/callback`,
 
       scope: ["openid", "profile", "email"],
     },

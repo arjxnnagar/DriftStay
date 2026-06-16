@@ -6,6 +6,7 @@ import Home from "./pages/Home.jsx";
 import Signup from "./pages/Signup.jsx";
 import OAuthSuccess from "./pages/OAuth.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
+import HostDashboard from "./pages/host.jsx";
 
 
 const App = () => {
@@ -15,9 +16,10 @@ const App = () => {
     <>
       <Toaster position="top-right" />
       <Routes>
-        <Route path="/home" element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/host" element={<HostDashboard />} />
 
         <Route
           path="/auth"

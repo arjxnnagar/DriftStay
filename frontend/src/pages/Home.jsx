@@ -14,7 +14,7 @@ export default function Home() {
         </h2>
         <p className="text-gray-600 mb-8">
           Discover unique homes, apartments, and villas around the world.
-        </p>
+        </p>x
 
         {/* Search Bar */}
         <div className="bg-white shadow-md rounded-full flex items-center p-2 max-w-2xl mx-auto">

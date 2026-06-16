@@ -1,12 +1,11 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext.jsx";
 
 
 export default function Navbar() {
     const navigate = useNavigate();
-
-    
-
+    const {user,token} = useAuth();
 
   return (
     <header className="w-full bg-white border-b">
@@ -28,21 +27,30 @@ export default function Navbar() {
         </nav>
 
         {/* Auth Buttons */}
-        <div className="flex items-center space-x-3">
-          <button
-            onClick={() => navigate("/login")}
-            className="text-sm text-gray-600 hover:text-black cursor-pointer"
-          >
-            Login
-          </button>
+        {user && token ? (
+          <div>
+            <button className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
+            onClick={()=>navigate("/host")}>
+              Become a host
+            </button>
+          </div>
+        ) : (
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => navigate("/auth")}
+              className="text-sm text-gray-600 hover:text-black cursor-pointer"
+            >
+              Login
+            </button>
 
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
-          >
-            Signup
-          </button>
-        </div>
+            <button
+              onClick={() => navigate("/auth")}
+              className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
+            >
+              Signup
+            </button>
+          </div>
+        )}
       </div>
     </header>
   );
