@@ -35,7 +35,7 @@ export const signup = async (req, res) => {
     });
 
     const token = generateToken(newUser.id);
-    res.status(200).json({ token, message: "Signup Successfull" });
+    res.status(200).json({ token,newUser, message: "Signup Successfull" });
   } catch (err) {
     console.log(err);
   }
@@ -65,7 +65,7 @@ export const login = async (req, res) => {
     }
 
     const token = generateToken(user.id);
-    res.status(200).json({ token, message: "Login Successfull" });
+    res.status(200).json({ token,user, message: "Login Successfull" });
   } catch (err) {
     console.log(err);
   }

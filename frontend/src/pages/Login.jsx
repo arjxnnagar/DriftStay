@@ -1,11 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import api from "../api/axios";
 
 export default function Login({ loginState, setLoginState }) {
+
+  const [email,setEmail] = useState("");
+  const [password,setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+
+
 
   const handleGoogleLogin = async () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/users/google`;
   };
+
+  const handleSubmit =(e)=>{
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { data } = api.post("/login", {
+        email,
+        password,
+      });
+      console.log(data);
+    } catch (err) {
+      toast.error(err.message);
+    }finally{
+      setLoading(false);
+    }
+  }
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-200">
@@ -23,7 +49,6 @@ export default function Login({ loginState, setLoginState }) {
             <FaGoogle />
             Continue with Google
           </button>
-
         </div>
 
         {/* Divider */}
@@ -34,17 +59,21 @@ export default function Login({ loginState, setLoginState }) {
         </div>
 
         {/* Traditional Login */}
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email"
             className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
             className="w-full border rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-black"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
 
           <button

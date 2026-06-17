@@ -1,5 +1,5 @@
 import React, { children,useEffect, useState, useContext,createContext } from 'react'
-
+import api from '../api/axios';
 
 const AuthContext = createContext();
 
@@ -20,7 +20,7 @@ const AuthProvider = ({children}) => {
         if(storedUser && storedToken){
         setUser(JSON.parse(storedUser));
         setToken(storedToken);
-        // api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
+        api.defaults.headers.common["Authorization"] = `Bearer ${storedToken}`;
         }
         setIsLoading(false);
     },[])
@@ -28,7 +28,7 @@ const AuthProvider = ({children}) => {
 
 
   return (
-    <AuthContext.Provider value={{user,token}}>
+    <AuthContext.Provider value={{user,token,setUser,setToken}}>
         {children}
     </AuthContext.Provider>
   )
