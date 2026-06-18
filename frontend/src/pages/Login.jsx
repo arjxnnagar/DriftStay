@@ -1,35 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import api from "../api/axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login({ loginState, setLoginState }) {
 
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-
-
+  const {user,token,setUser,setToken} = useAuth();
 
   const handleGoogleLogin = async () => {
     window.location.href = `${import.meta.env.VITE_BACKEND_URL}/users/google`;
   };
 
-  const handleSubmit =(e)=>{
+  useEffect(()=>{
+    if(user && token){
+      navigate("/dashboard");
+    }
+  })
+
+
+  const handleSubmit = async (e)=>{
     e.preventDefault();
     setLoading(true);
 
     try {
-      const { data } = api.post("/login", {
-        email,
-        password,
-      });
-      console.log(data);
-    } catch (err) {
-      toast.error(err.message);
-    }finally{
-      setLoading(false);
-    }
+        const  response  = await api.post("/users/login",{
+          email,
+          password,
+        });
+        const data = response.data;
+        const token = data.token;
+        setUser(data.user);
+        setToken(data.token);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        localStorage.setItem("token", data.token);
+        navigate("/dashboard");
+      } catch (err) {
+          toast.error(err.message);
+      } finally {
+          setLoading(false);
+      }
   }
 
 
@@ -59,7 +75,7 @@ export default function Login({ loginState, setLoginState }) {
         </div>
 
         {/* Traditional Login */}
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={(e)=>handleSubmit(e)}>
           <input
             type="email"
             placeholder="Email"

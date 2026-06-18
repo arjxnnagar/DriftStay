@@ -24,13 +24,18 @@ export default function Navbar() {
           <a href="/about" className="hover:text-black">
             About
           </a>
+          <a className="hover:text-black cursor-pointer" onClick={()=>navigate("/Dashboard")}>
+            Dashboard
+          </a>
         </nav>
 
         {/* Auth Buttons */}
         {user && token ? (
           <div>
-            <button className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
-            onClick={()=>navigate("/host")}>
+            <button
+              className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
+              onClick={() => navigate("/host")}
+            >
               Become a host
             </button>
           </div>

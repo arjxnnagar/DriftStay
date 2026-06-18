@@ -50,6 +50,7 @@ model Property {
   description   String?
   pricePerNight Decimal     @db.Decimal(10, 2)
   location      String
+  photos        String[]
 
   owner         User        @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 

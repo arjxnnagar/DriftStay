@@ -25,8 +25,6 @@ const AuthProvider = ({children}) => {
         setIsLoading(false);
     },[])
 
-
-
   return (
     <AuthContext.Provider value={{user,token,setUser,setToken}}>
         {children}
