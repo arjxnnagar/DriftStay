@@ -86,17 +86,23 @@ export const getMe = async (req,res)=>{
   }
 }
 
-export const makeHost = (req,res)=>{
+export const makeHost = async (req,res)=>{
 
-  const user = req.user;
-
-  user.role = "HOST"
-
-
-
-
-
-
-
-
+  try {
+    const user = req.user;
+    const updatedUser = await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        role: "HOST",
+      },
+    });
+    return res.status(200).json({
+      message: "User is now a host",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }

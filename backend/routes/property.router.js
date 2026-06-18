@@ -6,3 +6,6 @@ const propertyRouter = express.Router();
 propertyRouter.get("/all",getProperties);
 
 
+
+
+

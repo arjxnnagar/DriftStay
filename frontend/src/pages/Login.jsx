@@ -22,7 +22,7 @@ export default function Login({ loginState, setLoginState }) {
     if(user && token){
       navigate("/dashboard");
     }
-  })
+  },[])
 
 
   const handleSubmit = async (e)=>{

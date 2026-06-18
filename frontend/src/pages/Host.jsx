@@ -1,8 +1,36 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 export default function HostDashboard() {
+
+  const navigate = useNavigate();
+  const { user, token } = useAuth();
+
+  useEffect(() => {
+    const func = async () =>{
+      if (!token) {
+        toast.error("Not authorized");
+        navigate("/auth");
+        return;
+      }
+
+      if (!user) {
+        return;
+      }
+
+      if (user.role !== "HOST") {
+        toast.error("You are not a host");
+        navigate("/dashboard");
+      }
+    }
+    func();
+}, []);
+
+
   const properties = [
     {
       id: 1,

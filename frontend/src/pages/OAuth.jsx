@@ -1,10 +1,12 @@
 import { useEffect } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useActionData, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import api from "../api/axios";
+import { useAuth } from "../context/AuthContext";
 
 export default  function OAuthSuccess () {
   const [ searchParams ] = useSearchParams();
   const navigate = useNavigate();
+  const {setUser,setToken} = useAuth();
 
   useEffect(() => {
     const func =async ()=>{
@@ -12,6 +14,7 @@ export default  function OAuthSuccess () {
 
     if (token) {
       localStorage.setItem("token", token);
+      setToken(token);
     } else {
       navigate("/auth");
     }
@@ -23,7 +26,9 @@ export default  function OAuthSuccess () {
 );
     const data = response.data;
      if (token) {
+
       localStorage.setItem("user", JSON.stringify(data));
+      setUser(data);
       navigate("/dashboard");
     } else {
       navigate("/auth");
