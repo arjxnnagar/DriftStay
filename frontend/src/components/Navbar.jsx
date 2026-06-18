@@ -1,11 +1,27 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import api from "../api/axios.js";
 
 
 export default function Navbar() {
     const navigate = useNavigate();
     const {user,token} = useAuth();
+
+
+    const becomeHost = async  ()=>{
+
+      const confirmation = confirm("Are you sure you want to become a host?");
+      if(confirmation){
+        console.log(user);
+        const response = await api.post("/users/makehost");
+
+      }
+
+
+
+    }
+
 
   return (
     <header className="w-full bg-white border-b">
@@ -24,7 +40,7 @@ export default function Navbar() {
           <a href="/about" className="hover:text-black">
             About
           </a>
-          <a className="hover:text-black cursor-pointer" onClick={()=>navigate("/Dashboard")}>
+          <a className="hover:text-black cursor-pointer" onClick={()=>navigate("/dashboard")}>
             Dashboard
           </a>
         </nav>
@@ -34,7 +50,7 @@ export default function Navbar() {
           <div>
             <button
               className="bg-black text-white text-sm px-4 py-2 rounded-full hover:opacity-90 cursor-pointer"
-              onClick={() => navigate("/host")}
+              onClick={() => becomeHost()}
             >
               Become a host
             </button>

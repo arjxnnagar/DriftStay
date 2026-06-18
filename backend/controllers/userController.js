@@ -84,6 +84,19 @@ export const getMe = async (req,res)=>{
   } catch (err) {
     console.log(err);
   }
+}
+
+export const makeHost = (req,res)=>{
+
+  const user = req.user;
+
+  user.role = "HOST"
+
+
+
+
+
+
 
 
 }
