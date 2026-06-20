@@ -1,8 +1,24 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import api from "../api/axios";
 
 export default function Home() {
+
+  const [properties,setProperties] = useState([]);
+  useEffect(()=>{
+
+    const fetchProp = async ()=>{
+
+      const response = await api.get("/property/all");
+      setProperties(response.data);
+    }
+    fetchProp();
+  },[]);
+
+
+
+
   return (
     <div className="min-h-screen bg-slate-200">
       <Navbar />
@@ -34,16 +50,25 @@ export default function Home() {
         <h3 className="text-xl font-semibold mb-6">Popular stays</h3>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((item) => (
+          {properties?.map((property) => (
             <div
-              key={item}
+              key={property.id}
               className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md transition"
             >
-              <div className="h-40 bg-gray-200" />
+              <img
+                src={property.photos?.[0]}
+                alt={property.title}
+                className="w-full h-40 object-cover"
+              />
+
               <div className="p-4">
-                <h4 className="font-semibold">Cozy Apartment</h4>
-                <p className="text-sm text-gray-500">Delhi, India</p>
-                <p className="mt-2 font-medium">$120 / night</p>
+                <h4 className="font-semibold truncate">{property.title}</h4>
+
+                <p className="text-sm text-gray-500">{property.location}</p>
+
+                <p className="mt-2 font-medium">
+                  ₹{property.pricePerNight} / night
+                </p>
               </div>
             </div>
           ))}

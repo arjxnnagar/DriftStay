@@ -1,17 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useAuth } from "../context/AuthContext";
+import api from "../api/axios";
 
 export default function HostDashboard() {
 
   const navigate = useNavigate();
-  const { user, token } = useAuth();
+  const { user, token ,isLoading } = useAuth();
+  const [properties, setProperties] = useState([]);
 
   useEffect(() => {
     const func = async () =>{
+
+      if(isLoading) return;
       if (!token) {
         toast.error("Not authorized");
         navigate("/auth");
@@ -27,39 +31,16 @@ export default function HostDashboard() {
         navigate("/dashboard");
       }
     }
+    const fetchProp = async () => {
+      if (!user) return;
+      const res = await api.get(`/property/myprop/${user.id}`);
+      setProperties(res.data.prop);
+    };
+    fetchProp();
     func();
-}, []);
+}, [user,token]);
 
 
-  const properties = [
-    {
-      id: 1,
-      title: "Luxury Apartment",
-      location: "Delhi",
-      price: 4500,
-      bookings: 24,
-      image:
-        "https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800",
-    },
-    {
-      id: 2,
-      title: "Mountain Villa",
-      location: "Manali",
-      price: 6500,
-      bookings: 15,
-      image:
-        "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800",
-    },
-    {
-      id: 3,
-      title: "Beach House",
-      location: "Goa",
-      price: 8000,
-      bookings: 31,
-      image:
-        "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800",
-    },
-  ];
 
   const recentBookings = [
     {
@@ -82,6 +63,11 @@ export default function HostDashboard() {
     },
   ];
 
+  const addNew = () => {
+    navigate("/host/addproperty");
+  }
+
+
   return (
     <div className="min-h-screen bg-slate-100">
       <Navbar />
@@ -96,7 +82,10 @@ export default function HostDashboard() {
             </p>
           </div>
 
-          <button className="mt-4 md:mt-0 bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800">
+          <button
+            className="mt-4 md:mt-0 bg-black text-white px-5 py-3 rounded-lg hover:bg-gray-800 cursor-pointer"
+            onClick={() => addNew()}
+          >
             + Add Property
           </button>
         </div>
@@ -168,7 +157,7 @@ export default function HostDashboard() {
                 className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition"
               >
                 <img
-                  src={property.image}
+                  src={property.photos?.[0]}
                   alt={property.title}
                   className="h-56 w-full object-cover"
                 />
@@ -178,7 +167,9 @@ export default function HostDashboard() {
 
                   <p className="text-gray-500 mt-1">📍 {property.location}</p>
 
-                  <p className="mt-3 font-medium">₹{property.price}/night</p>
+                  <p className="mt-3 font-medium">
+                    ₹{property.pricePerNight}/night
+                  </p>
 
                   <p className="text-sm text-gray-500 mt-2">
                     {property.bookings} bookings this month

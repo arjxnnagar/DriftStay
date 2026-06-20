@@ -5,14 +5,24 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user,setUser,setToken } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!user) {
       navigate("/auth");
     }
-  }, [user, navigate]);
+  }, []);
+
+
+  const logout = async () =>{
+    setUser("");
+    setToken("");
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    navigate("/");
+  }
+
 
   const [search, setSearch] = useState("");
 
@@ -201,6 +211,13 @@ export default function Dashboard() {
               ))}
             </div>
           )}
+        </section>
+
+        <section className="bg-linear-to-r from-black via-gray-900 to-black text-white rounded-3xl p-8 md:p-12 mb-8 mt-8 cursor-pointer"
+        onClick={logout}>
+          <div className="flex flex-col md:flex-row justify-center items-center gap-6 text-6xl">
+            Logout
+          </div>
         </section>
       </main>
 

@@ -4,7 +4,6 @@ import  prisma  from "../configs/prisma.js";
 const protect = async (req, res, next) => {
   try {
     let token;
-
     if (
       req.headers.authorization &&
       req.headers.authorization.startsWith("Bearer")

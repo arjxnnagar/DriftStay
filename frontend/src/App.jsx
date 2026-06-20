@@ -7,6 +7,7 @@ import Signup from "./pages/Signup.jsx";
 import OAuthSuccess from "./pages/OAuth.jsx";
 import Dashboard from "./pages/Dashboard.jsx";
 import HostDashboard from "./pages/host.jsx";
+import AddProperty from "./pages/AddProperty.jsx";
 
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
         <Route path="/oauth-success" element={<OAuthSuccess />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/host" element={<HostDashboard />} />
+        <Route path="/host/addproperty" element={<AddProperty />} />
 
         <Route
           path="/auth"

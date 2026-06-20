@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Brand */}
           <div>
-            <h2 className="text-lg font-semibold">StayFinder</h2>
+            <h2 className="text-lg font-semibold">DriftStay</h2>
             <p className="text-sm text-gray-600 mt-2">
               Find unique stays around the world with ease.
             </p>
